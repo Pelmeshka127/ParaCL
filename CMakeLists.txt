@@ -4,11 +4,15 @@ project(ParaCL)
 
 find_package(FLEX REQUIRED)
 
-flex_target(scanner parsing/lexer.l ${CMAKE_CURRENT_BINARY_DIR}/lexer.cc
-)
+find_package(BISON REQUIRED)
 
-add_executable(paracl driver.cpp ${FLEX_scanner_OUTPUTS}
-)
+flex_target(lexer parsing/lexer.l ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
+
+# bison_target(parser parsing/parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/parser.hpp)
+
+# add_flex_bison_dependency(lexer parser)
+
+add_executable(paracl main.cpp ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
 
 target_compile_features(paracl PRIVATE cxx_std_17)
 

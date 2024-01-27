@@ -1,15 +1,14 @@
-#include <iostream>
-
-#include <FlexLexer.h>
+#include "driver.hpp"
 
 int yyFlexLexer::yywrap() { return 1; }
 
-int main() {
+int main() 
+{
     FlexLexer *lexer = new yyFlexLexer;
-    while (lexer->yylex() != 0) 
-    {
 
-    }
+    Driver driver(lexer);
+
+    driver.Parse();
 
     delete lexer;
 }
