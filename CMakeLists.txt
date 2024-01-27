@@ -8,9 +8,9 @@ find_package(BISON REQUIRED)
 
 flex_target(lexer parsing/lexer.l ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
 
-# bison_target(parser parsing/parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/parser.hpp)
+bison_target(parser parsing/parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/parser.hpp)
 
-# add_flex_bison_dependency(lexer parser)
+add_flex_bison_dependency(lexer parser)
 
 add_executable(paracl main.cpp ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
 

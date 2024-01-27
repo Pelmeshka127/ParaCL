@@ -6,7 +6,7 @@ int main()
 {
     FlexLexer *lexer = new yyFlexLexer;
 
-    Driver driver(lexer);
+    yy::Driver driver(lexer);
 
     driver.Parse();
 
