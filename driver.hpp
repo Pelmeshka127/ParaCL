@@ -30,14 +30,14 @@ class Driver
 
         bool Parse()
         {
-            while (lexer_->yylex() != 0)
-            {
+            // while (lexer_->yylex() != 0)
+            // {
                 
-            }
+            // }
 
-            // parser parser(this);
-            // bool res = parser.parse();
-            // return !res;
+            parser parser(this);
+            bool res = parser.parse();
+            return !res;
 
             return 1;
         }

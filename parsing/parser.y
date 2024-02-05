@@ -54,7 +54,6 @@ parser::token_type yylex(parser::semantic_type* yylval,
 %token <std::string>  VAR
 %nterm <int> equals
 %nterm <int> expr
-%nterm <int> arith
 
 %start program
 
@@ -63,8 +62,7 @@ parser::token_type yylex(parser::semantic_type* yylval,
 program: eqlist
 ;
 
-eqlist: equals SEMICOLON eqlist
-      | %empty
+eqlist: equals SEMICOLON eqlist | %empty
 ;
 
 equals: expr ASG expr   { 
@@ -75,20 +73,18 @@ equals: expr ASG expr   {
                           }
 ;
 
-expr: DIGIT arith        { $$ = $1 + $2; }
-;
-
-arith: PLUS DIGIT arith  { $$ = $2 + $3; }
-     | MINUS DIGIT arith { $$ = -$2 + $3; }
-     | %empty             { $$ = 0; }
+expr: expr PLUS DIGIT       { $$ = $1 + $3; }
+    | expr MINUS DIGIT      { $$ = $1 - $3; }
+    | expr MULT DIGIT       { $$ = $1 * $3; }
+    | expr DIVIDE DIGIT     { $$ = $1 / $3; }
+    | DIGIT                 { $$ = $1; }
 ;
 
 %%
 
 namespace yy {
 
-parser::token_type yylex(parser::semantic_type* yylval,                         
-                         Driver* driver)
+parser::token_type yylex(parser::semantic_type* yylval, Driver* driver)
 {
   return driver->yylex(yylval);
 }
