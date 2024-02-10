@@ -2,6 +2,7 @@
 #define DRIVER_HPP_
 
 #include <iostream>
+#include <map>
 #include "parser.hpp"
 #include <FlexLexer.h>
 
@@ -14,8 +15,11 @@ class Driver
     
         FlexLexer* lexer_;
 
+
     public:
 
+        std::map<std::string, int> vars_;
+        
         Driver(FlexLexer* lexer) : lexer_{lexer} {}
 
         parser::token_type yylex(parser::semantic_type* yylval) 

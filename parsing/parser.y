@@ -26,34 +26,36 @@ parser::token_type yylex(parser::semantic_type* yylval,
 }
 
 %token
-  ASG           "="
-  MINUS         "-"
-  PLUS          "+"
-  MULT          "*"
-  DIVIDE        "/"
-  EQUAL         "=="
-  EQ_ABOVE      ">="
-  ABOVE         ">"
-  EQ_BELOW      "<="
-  BELOW         "<"
-  NOT_EQUAL     "!="
-  INPUT         "?"
-  COMMA         ","
-  SEMICOLON     ";"
-  LEFT_BRACKET  "("
-  RIGHT_BRACKET ")"
-  LEFT_BRACE    "{"
-  RIGHT_BRACE   "}"
-  WHILE         "while"
-  IF            "if"
-  PRINT         "print"
-  ERR
+    ASG           "="
+    MINUS         "-"
+    PLUS          "+"
+    MULT          "*"
+    DIVIDE        "/"
+    EQUAL         "=="
+    EQ_ABOVE      ">="
+    ABOVE         ">"
+    EQ_BELOW      "<="
+    BELOW         "<"
+    NOT_EQUAL     "!="
+    INPUT         "?"
+    COMMA         ","
+    SEMICOLON     ";"
+    LEFT_BRACKET  "("
+    RIGHT_BRACKET ")"
+    LEFT_BRACE    "{"
+    RIGHT_BRACE   "}"
+    WHILE         "while"
+    IF            "if"
+    PRINT         "print"
+    ERR
 ;
 
 %token <int>          DIGIT
 %token <std::string>  VAR
 %nterm <int> equals
 %nterm <int> expr
+%nterm <int> strongexpr
+%nterm <int> var
 
 %start program
 
@@ -65,29 +67,39 @@ program: eqlist
 eqlist: equals SEMICOLON eqlist | %empty
 ;
 
-equals: expr ASG expr   { 
-                            $$ = ($1 == $3); 
+equals: VAR ASG expr   { 
+                            driver->vars_[$1] = $3;
+    /*                        $$ = ($1 == $3); 
                             std::cout << "Checking: " << $1 << " vs " << $3 
                                       << "; Result: " << $$
-                                      << std::endl; 
+                                      << std::endl; */
+                            std::cout << driver->vars_[$1] << std::endl;
                           }
 ;
 
-expr: expr PLUS DIGIT       { $$ = $1 + $3; }
-    | expr MINUS DIGIT      { $$ = $1 - $3; }
-    | expr MULT DIGIT       { $$ = $1 * $3; }
-    | expr DIVIDE DIGIT     { $$ = $1 / $3; }
-    | DIGIT                 { $$ = $1; }
+expr: expr PLUS strongexpr { $$ = $1 + $3; }
+    | expr MINUS strongexpr { $$ = $1 - $3; }
+    | strongexpr { $$ = $1; }
 ;
+
+strongexpr: strongexpr MULT var { $$ = $1 * $3; }
+    | strongexpr DIVIDE var { $$ = $1 / $3; }
+    | var
+;
+
+var: DIGIT       
+    | VAR           { $$ = driver->vars_[$1]; }
 
 %%
 
-namespace yy {
+namespace yy 
+{
 
 parser::token_type yylex(parser::semantic_type* yylval, Driver* driver)
 {
-  return driver->yylex(yylval);
+    return driver->yylex(yylval);
 }
 
 void parser::error(const std::string&){}
+
 }
