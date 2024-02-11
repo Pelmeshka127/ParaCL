@@ -52,10 +52,9 @@ parser::token_type yylex(parser::semantic_type* yylval,
 
 %token <int>          DIGIT
 %token <std::string>  VAR
-%nterm <int> equals
-%nterm <int> expr
-%nterm <int> strongexpr
-%nterm <int> var
+%nterm <int> equals expr strongexpr var
+%nterm print
+%nterm printing
 
 %start program
 
@@ -64,16 +63,14 @@ parser::token_type yylex(parser::semantic_type* yylval,
 program: eqlist
 ;
 
-eqlist: equals SEMICOLON eqlist | %empty
+eqlist: equals SEMICOLON eqlist 
+    | print SEMICOLON eqlist
+    | %empty
 ;
 
 equals: VAR ASG expr   { 
                             driver->vars_[$1] = $3;
-    /*                        $$ = ($1 == $3); 
-                            std::cout << "Checking: " << $1 << " vs " << $3 
-                                      << "; Result: " << $$
-                                      << std::endl; */
-                            std::cout << driver->vars_[$1] << std::endl;
+                            /*std::cout << driver->vars_[$1] << std::endl;*/
                           }
 ;
 
@@ -89,6 +86,14 @@ strongexpr: strongexpr MULT var { $$ = $1 * $3; }
 
 var: DIGIT       
     | VAR           { $$ = driver->vars_[$1]; }
+;
+
+print: PRINT LEFT_BRACKET printing RIGHT_BRACKET
+;
+
+printing: DIGIT { std::cout << $1 << std::endl; }
+    | VAR { std::cout << driver->vars_[$1] << std::endl; }
+;
 
 %%
 

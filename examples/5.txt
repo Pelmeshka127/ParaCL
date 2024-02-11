@@ -1,2 +1,3 @@
 xx = 3 * 10 + 4;
 yy = 5 + xx;
+print(yy);
