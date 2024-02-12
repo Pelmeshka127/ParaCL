@@ -52,9 +52,11 @@ parser::token_type yylex(parser::semantic_type* yylval,
 
 %token <int>          DIGIT
 %token <std::string>  VAR
-%nterm <int> equals expr strongexpr var
+%nterm <int> equals expression plusminus multdiv var logoperator
 %nterm print
-%nterm printing
+%nterm input
+%nterm if
+%nterm while
 
 %start program
 
@@ -65,35 +67,56 @@ program: eqlist
 
 eqlist: equals SEMICOLON eqlist 
     | print SEMICOLON eqlist
+    | input SEMICOLON eqlist
     | %empty
 ;
 
-equals: VAR ASG expr   { 
+equals: VAR ASG expression { 
                             driver->vars_[$1] = $3;
                             /*std::cout << driver->vars_[$1] << std::endl;*/
-                          }
+                        }
 ;
 
-expr: expr PLUS strongexpr { $$ = $1 + $3; }
-    | expr MINUS strongexpr { $$ = $1 - $3; }
-    | strongexpr { $$ = $1; }
+expression: logoperator
 ;
 
-strongexpr: strongexpr MULT var { $$ = $1 * $3; }
-    | strongexpr DIVIDE var { $$ = $1 / $3; }
+logoperator: plusminus EQUAL plusminus { $$ = $1 == $3; }
+    | plusminus NOT_EQUAL plusminus { $$ = $1 != $3; }
+    | plusminus ABOVE plusminus { $$ = $1 > $3; }
+    | plusminus EQ_ABOVE plusminus { $$ = $1 >= $3; }
+    | plusminus BELOW plusminus { $$ = $1 < $3; }
+    | plusminus EQ_BELOW plusminus { $$ = $1 <= $3; }
+    | plusminus { $$ = $1; }
+;
+
+plusminus: plusminus PLUS multdiv { $$ = $1 + $3; }
+    | plusminus MINUS multdiv { $$ = $1 - $3; }
+    | multdiv { $$ = $1; }
+;
+
+multdiv: multdiv MULT var { $$ = $1 * $3; }
+    | multdiv DIVIDE var { $$ = $1 / $3; }
     | var
 ;
 
-var: DIGIT       
-    | VAR           { $$ = driver->vars_[$1]; }
+var: DIGIT { $$ = $1; } 
+    | VAR { $$ = driver->vars_[$1]; }
+    | LEFT_BRACKET plusminus RIGHT_BRACKET { $$ = $2; }
 ;
 
-print: PRINT LEFT_BRACKET printing RIGHT_BRACKET
+print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { std::cout << $3 << std::endl; }
 ;
 
-printing: DIGIT { std::cout << $1 << std::endl; }
-    | VAR { std::cout << driver->vars_[$1] << std::endl; }
-;
+input: VAR ASG INPUT
+{
+    int n{};
+
+    std::cin >> n;
+
+    std::cout << n << std::endl;
+
+    driver->vars_[$1] = n;
+}
 
 %%
 
