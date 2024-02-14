@@ -68,6 +68,7 @@ program: eqlist
 eqlist: equals SEMICOLON eqlist 
     | print SEMICOLON eqlist
     | input SEMICOLON eqlist
+    | if SEMICOLON eqlist
     | %empty
 ;
 
@@ -117,6 +118,9 @@ input: VAR ASG INPUT
 
     driver->vars_[$1] = n;
 }
+
+if: IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE eqlist RIGHT_BRACE
+;
 
 %%
 

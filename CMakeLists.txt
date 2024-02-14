@@ -16,6 +16,8 @@ add_executable(paracl main.cpp ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
 
 target_compile_features(paracl PRIVATE cxx_std_17)
 
+include_directories(frontend/inc)
+
 target_include_directories(paracl PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 target_include_directories(paracl PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

@@ -4,7 +4,7 @@
 namespace paracl
 {
 
-enum Type_t {
+enum class Type_t {
     NoType,
     Digit,
     Variable,
@@ -14,14 +14,15 @@ enum Type_t {
     Bracket,
 };
 
-enum Brackets {
+enum class Brackets {
     LeftBracket,
     RightBracket,
     LeftBrace,
     RightBrace,
 };
 
-enum Operators {
+enum class Operators {
+    NoType,
     Plus,
     Minus,
     Mult,
@@ -29,7 +30,7 @@ enum Operators {
     Asg,
 };
 
-enum LogigalOperator {
+enum class LogigalOperator {
     Above,
     EqAbove,
     Below,
@@ -38,7 +39,7 @@ enum LogigalOperator {
     NotEq,
 };
 
-enum KeyWords {
+enum class KeyWords {
     Input,
     Print,
     If,
