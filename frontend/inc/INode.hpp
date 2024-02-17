@@ -1,6 +1,8 @@
 #ifndef INODE_HPP_
 #define INODE_HPP_
 
+#define DUMP
+
 #include <iostream>
 
 #include "types.hpp"
@@ -23,7 +25,7 @@ class INode
             std::cout << "Deleting Inode" << std::endl;
         }
 
-        virtual void Dump () const = 0;
+        virtual void Dump (std::ofstream& graph_file) const = 0;
 };
 
 //======================================================================================//
