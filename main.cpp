@@ -8,23 +8,31 @@ int yyFlexLexer::yywrap() { return 1; }
 
 int main() 
 {
-    std::ofstream file{};
+    // std::ofstream file{};
 
     using namespace paracl;
 
-    FlexLexer *lexer = new yyFlexLexer;
+    // FlexLexer *lexer = new yyFlexLexer;
 
-    yy::Driver driver(lexer);
+    // yy::Driver driver(lexer);
 
-    driver.Parse();
+    // driver.Parse();
 
-    delete lexer;
+    // delete lexer;
+
+    INode* num = new Digit(4);
+
+    INode* var = new Variable("x", 3);
 
     AST tree;
 
-    tree.root_ = new Digit();
+    tree.root_ = new BinOp(Operators::Plus, var, num);
 
     tree.Dump();
+
+    delete num;
+
+    delete var;
 
     delete tree.root_;
 }

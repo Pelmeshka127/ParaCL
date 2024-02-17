@@ -12,7 +12,9 @@ bison_target(parser parsing/parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp DEFI
 
 add_flex_bison_dependency(lexer parser)
 
-add_executable(paracl main.cpp ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
+aux_source_directory(./frontend/src SRC_FRONTEND)
+
+add_executable(paracl main.cpp ${SRC_FRONTEND} ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
 
 target_compile_features(paracl PRIVATE cxx_std_17)
 
