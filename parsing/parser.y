@@ -75,6 +75,7 @@ eqlist: equals SEMICOLON eqlist
 equals: VAR ASG expression { 
                             driver->vars_[$1] = $3;
                             /*std::cout << driver->vars_[$1] << std::endl;*/
+                            /*driver->tree.nodes.push_back(new paracl::BinOp(paracl::Operators::Plus));*/
                         }
 ;
 

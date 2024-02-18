@@ -4,7 +4,7 @@
 #include <string>
 #include <fstream>
 
-#include "Inode.hpp"
+#include "INode.hpp"
 
 namespace paracl
 {
@@ -68,17 +68,13 @@ class BinOp final : public INode
 
         ~BinOp()
         {
+            if (left_)
+                delete left_;
+
+            if (right_)
+                delete right_;
+                
             std::cout << "Deleting operator" << std::endl;
-        }
-
-        void SetLeft(INode* left)
-        {
-            left_ = left;
-        }
-
-        void SetRight(INode* right)
-        {
-            right_ = right;
         }
 
     private:

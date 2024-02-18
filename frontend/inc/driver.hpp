@@ -3,8 +3,10 @@
 
 #include <iostream>
 #include <map>
-#include "parser.hpp"
 #include <FlexLexer.h>
+
+#include "parser.hpp"
+#include "AST.hpp"
 
 namespace yy
 {
@@ -15,12 +17,15 @@ class Driver
     
         FlexLexer* lexer_;
 
-
     public:
+
+        paracl::AST tree;
 
         std::map<std::string, int> vars_;
         
         Driver(FlexLexer* lexer) : lexer_{lexer} {}
+
+        ~Driver() { delete lexer_; };
 
         parser::token_type yylex(parser::semantic_type* yylval) 
         {
@@ -34,16 +39,14 @@ class Driver
 
         bool Parse()
         {
-            // while (lexer_->yylex() != 0)
-            // {
-                
-            // }
-
             parser parser(this);
+            
             bool res = parser.parse();
-            return !res;
 
-            return 1;
+            if (tree.nodes.size())
+                tree.root_ = *tree.nodes.begin();
+
+            return !res;
         }
 
 };

@@ -1,19 +1,15 @@
 #ifndef AST_HPP_
 #define AST_HPP_
 
-#include "Inode.hpp"
+#include "INode.hpp"
 #include "Node.hpp"
 
-#ifdef DUMP
-
-static int graph_num = 1;
-
-static std::ofstream graph_file{};
-
-#endif
+#include <vector>
 
 namespace paracl
 {
+
+//======================================================================================//    
 
 class AST final
 {
@@ -25,11 +21,20 @@ class AST final
 
         void Dump() const;
 
-        ~AST()
+        std::vector<paracl::INode*> nodes{};
+
+        ~AST() 
         {
-            // delete root_;
+            auto begin = nodes.begin(), end = nodes.end();
+
+            for (auto it = begin; it != end; ++it)
+                delete *it;
         }
 };
+
+//======================================================================================//
+
+//======================================================================================//
 
 } // end of paracl namespace
 

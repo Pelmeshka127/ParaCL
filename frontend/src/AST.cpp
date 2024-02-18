@@ -1,5 +1,13 @@
 #include "AST.hpp"
 
+#ifdef DUMP
+
+static int graph_num = 1;
+
+static std::ofstream graph_file{};
+
+#endif
+
 namespace paracl
 {
 
