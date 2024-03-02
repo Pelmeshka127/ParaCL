@@ -16,25 +16,31 @@ class AST final
 {
     public:
 
-        AST() = default;
+        AST()
+        {
+            smart_nodes.reserve(20);
+        }
 
+        
         std::unique_ptr<paracl::INode> root_ = nullptr;
 
         std::vector<std::unique_ptr<paracl::INode>> smart_nodes{};
 
-        void Dump() const;
+        
+        void        Dump() const;
 
-        // void MakeBinOp(Operators op_type);
+        Digit*      MakeDigit(int value);
+
+        Variable*   MakeVar(std::string name);
+
+        
+        BinOp*      MakeBinOp(Operators op_type, INode* left = nullptr, INode* right = nullptr);
 
         ~AST() = default;
 };
 
 //======================================================================================//
 
-// void AST::MakeBinOp(Operators op_type)
-// {
-
-// }
 
 //======================================================================================//
 

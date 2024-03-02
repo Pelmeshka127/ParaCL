@@ -13,7 +13,7 @@ void Digit::Dump(std::ofstream& graph_file) const
     
         graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"yellow\",";
         
-        graph_file << "   label = \" {DIGIT | value = " << value_ << "}\"];\n";
+        graph_file << "   label = \" {DIGIT | Value = " << value_ << "}\"];\n";
     
     #else
 
@@ -30,7 +30,7 @@ void Variable::Dump(std::ofstream& graph_file) const
     
         graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"green\",";
         
-        graph_file << "   label = \" {VARIABLE | Name = " << name_ << "| Value = " << value_ << "}\"];\n";
+        graph_file << "   label = \" {VARIABLE | Name = " << name_ << "}\"];\n";
     
     #else
 

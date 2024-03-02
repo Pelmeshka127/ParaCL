@@ -15,8 +15,8 @@ class Variable final : public INode
 {
     public:
 
-        Variable(std::string name = "", int value = 0) 
-            : INode(Type_t::Variable), name_{name}, value_{value} {}
+        Variable(std::string name = "") 
+            : INode(Type_t::Variable), name_{name} {}
 
         void Dump(std::ofstream& graph_file) const override;
 
@@ -28,8 +28,6 @@ class Variable final : public INode
     private:
 
         std::string name_ = "";
-
-        int value_ = 0;
 };
 
 //======================================================================================//
@@ -66,12 +64,6 @@ class BinOp final : public INode
 
         ~BinOp()
         {
-            // if (left_)
-            //     delete left_;
-
-            // if (right_)
-            //     delete right_;
-                
             std::cout << "Deleting operator" << std::endl;
         }
 

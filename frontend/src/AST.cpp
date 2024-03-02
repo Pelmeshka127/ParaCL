@@ -13,6 +13,39 @@ namespace paracl
 
 //======================================================================================//
 
+Digit* AST::MakeDigit(int value)
+{
+    auto node = std::make_unique<Digit>(value);
+
+    smart_nodes.push_back(std::move(node));
+
+    return static_cast<Digit*>(smart_nodes.back().get());
+}
+
+//======================================================================================//
+
+Variable* AST::MakeVar(std::string name)
+{
+    auto node = std::make_unique<Variable>(name);
+
+    smart_nodes.push_back(std::move(node));
+
+    return static_cast<Variable*>(smart_nodes.back().get());
+}
+
+//======================================================================================//
+
+BinOp* AST::MakeBinOp(Operators op_type, INode* left, INode* right)
+{
+    auto node = std::make_unique<BinOp>(op_type, left, right);
+
+    smart_nodes.push_back(std::move(node));
+
+    return static_cast<BinOp*>(smart_nodes.back().get());
+}
+
+//======================================================================================//
+
 void AST::Dump() const
 {
     #ifdef DUMP

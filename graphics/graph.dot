@@ -2,10 +2,10 @@ digraph Tree
 {
    rankdir = HR;
    tree[shape = Mrecord, style = filled, color = "white", style = filled, fontcolor = "white", fillcolor = "blueviolet", label = "AST Tree"];
-   "0x157606af0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "red"   label = " {OPERATOR | Operation = 5}"];
-  "0x157606af0" -> "0x157606ac0" [color = "black"];
-  "0x157606af0" -> "0x157606aa0" [color = "black"];
-   "0x157606ac0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "green",   label = " {VARIABLE | Name = | Value = 0}"];
-   "0x157606aa0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "yellow",   label = " {DIGIT | value = 6}"];
-   tree -> "0x157606af0" [color = "blueviolet"];
+   "0x12b8040c0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "red"   label = " {OPERATOR | Operation = 5}"];
+  "0x12b8040c0" -> "0x12b804080" [color = "black"];
+  "0x12b8040c0" -> "0x12b8040b0" [color = "black"];
+   "0x12b804080"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "green",   label = " {VARIABLE | Name = }"];
+   "0x12b8040b0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "yellow",   label = " {DIGIT | Value = 17}"];
+   tree -> "0x12b8040c0" [color = "blueviolet"];
 }

@@ -53,12 +53,12 @@ parser::token_type yylex(parser::semantic_type* yylval,
 
 %token <int>          DIGIT
 %token <std::string>  VAR
-%nterm <int> equals expression plusminus multdiv var logoperator
+%nterm <int> equals expression plusminus multdiv lval logoperator
 %nterm print
 %nterm input
 %nterm if
 %nterm while
-%nterm <paracl::INode*> node nodedigit
+%nterm <paracl::INode*> node nodedigit var
 
 %start program
 
@@ -75,17 +75,9 @@ eqlist: /*equals SEMICOLON eqlist
     | %empty
 ;
 
-node: VAR ASG nodedigit
+node: var ASG nodedigit
 {
-    auto var = std::make_unique<paracl::Variable>($1);
-
-    auto bin = std::make_unique<paracl::BinOp>(paracl::Operators::Asg, var.get(), $3);
-
-    driver->tree.smart_nodes.push_back(std::move(var));
-
-    driver->tree.smart_nodes.push_back(std::move(bin));
-
-    driver->tree.root_ = std::move(*std::prev(driver->tree.smart_nodes.end()));
+    $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3);
 }
 
 equals: VAR ASG logoperator
@@ -113,21 +105,24 @@ plusminus: plusminus PLUS multdiv { $$ = $1 + $3; }
     | multdiv { $$ = $1; }
 ;
 
-multdiv: multdiv MULT var { $$ = $1 * $3; }
-    | multdiv DIVIDE var { $$ = $1 / $3; }
-    | var
+multdiv: multdiv MULT lval { $$ = $1 * $3; }
+    | multdiv DIVIDE lval { $$ = $1 / $3; }
+    | lval
 ;
 
-var: DIGIT { $$ = $1; } 
+lval: DIGIT { $$ = $1; } 
     | VAR { $$ = driver->vars_[$1]; }
     | LEFT_BRACKET plusminus RIGHT_BRACKET { $$ = $2; }
 ;
 
-nodedigit: var 
+var: VAR
+{
+    $$ = driver->tree.MakeVar($1);
+}
+
+nodedigit: lval
 { 
-    auto node = std::make_unique<paracl::Digit>($1); 
-    driver->tree.smart_nodes.push_back(std::move(node));
-    $$ = driver->tree.smart_nodes.back().get();
+    $$ = driver->tree.MakeDigit($1);
 }
 
 print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { std::cout << $3 << std::endl; }

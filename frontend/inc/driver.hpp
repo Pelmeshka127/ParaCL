@@ -43,12 +43,11 @@ class Driver
             
             bool res = parser.parse();
 
-            // if (tree.smart_nodes.size())
-            //     tree.root_ = std::move(*tree.smart_nodes.begin());
+            if (tree.smart_nodes.size())
+                tree.root_ = std::move(*std::prev(tree.smart_nodes.end()));
 
             return !res;
         }
-
 };
 
 } // end of yy namespace
