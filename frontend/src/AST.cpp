@@ -26,7 +26,9 @@ void AST::Dump() const
     graph_file << "   tree[shape = Mrecord, style = filled, color = \"white\", style = filled, fontcolor = \"white\", fillcolor = \"blueviolet\", "
                         "label = \"AST Tree\"];\n";
 
-    root_->Dump(graph_file);
+    // root_->Dump(graph_file);
+
+    root_.get()->Dump(graph_file);
     
     graph_file << "   tree -> \"" << root_ << "\" [color = \"blueviolet\"];\n";
     

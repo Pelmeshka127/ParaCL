@@ -43,8 +43,8 @@ class Driver
             
             bool res = parser.parse();
 
-            if (tree.nodes.size())
-                tree.root_ = *tree.nodes.begin();
+            // if (tree.smart_nodes.size())
+            //     tree.root_ = std::move(*tree.smart_nodes.begin());
 
             return !res;
         }

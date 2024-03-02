@@ -15,8 +15,6 @@ class Variable final : public INode
 {
     public:
 
-        int x = 0;
-
         Variable(std::string name = "", int value = 0) 
             : INode(Type_t::Variable), name_{name}, value_{value} {}
 
@@ -68,13 +66,23 @@ class BinOp final : public INode
 
         ~BinOp()
         {
-            if (left_)
-                delete left_;
+            // if (left_)
+            //     delete left_;
 
-            if (right_)
-                delete right_;
+            // if (right_)
+            //     delete right_;
                 
             std::cout << "Deleting operator" << std::endl;
+        }
+
+        void SetLeft(INode* node)
+        {
+            left_ = node;
+        }
+
+        void SetRight(INode* node)
+        {
+            right_ = node;
         }
 
     private:

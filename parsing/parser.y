@@ -9,6 +9,7 @@
 {
 #include <iostream>
 #include <string>
+#include "AST.hpp"
 
 // forward decl of argument to parser
 namespace yy { class Driver; }
@@ -57,6 +58,7 @@ parser::token_type yylex(parser::semantic_type* yylval,
 %nterm input
 %nterm if
 %nterm while
+%nterm <paracl::INode*> node nodedigit
 
 %start program
 
@@ -65,18 +67,33 @@ parser::token_type yylex(parser::semantic_type* yylval,
 program: eqlist
 ;
 
-eqlist: equals SEMICOLON eqlist 
+eqlist: /*equals SEMICOLON eqlist 
     | print SEMICOLON eqlist
     | input SEMICOLON eqlist
-    | if SEMICOLON eqlist
+    | if SEMICOLON eqlist*/
+    | node SEMICOLON eqlist
     | %empty
 ;
 
-equals: VAR ASG expression { 
-                            driver->vars_[$1] = $3;
-                            /*std::cout << driver->vars_[$1] << std::endl;*/
-                            /*driver->tree.nodes.push_back(new paracl::BinOp(paracl::Operators::Plus));*/
-                        }
+node: VAR ASG nodedigit
+{
+    auto var = std::make_unique<paracl::Variable>($1);
+
+    auto bin = std::make_unique<paracl::BinOp>(paracl::Operators::Asg, var.get(), $3);
+
+    driver->tree.smart_nodes.push_back(std::move(var));
+
+    driver->tree.smart_nodes.push_back(std::move(bin));
+
+    driver->tree.root_ = std::move(*std::prev(driver->tree.smart_nodes.end()));
+}
+
+equals: VAR ASG logoperator
+    { 
+        driver->vars_[$1] = $3;
+        std::cout << driver->vars_[$1] << std::endl;
+        /*driver->tree.nodes.push_back(new paracl::BinOp(paracl::Operators::Asg, new paracl::Variable($1), $3));*/
+    }
 ;
 
 expression: logoperator
@@ -105,6 +122,13 @@ var: DIGIT { $$ = $1; }
     | VAR { $$ = driver->vars_[$1]; }
     | LEFT_BRACKET plusminus RIGHT_BRACKET { $$ = $2; }
 ;
+
+nodedigit: var 
+{ 
+    auto node = std::make_unique<paracl::Digit>($1); 
+    driver->tree.smart_nodes.push_back(std::move(node));
+    $$ = driver->tree.smart_nodes.back().get();
+}
 
 print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { std::cout << $3 << std::endl; }
 ;

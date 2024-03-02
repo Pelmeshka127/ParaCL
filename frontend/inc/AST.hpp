@@ -5,11 +5,12 @@
 #include "Node.hpp"
 
 #include <vector>
+#include <memory>
 
 namespace paracl
 {
 
-//======================================================================================//    
+//======================================================================================//
 
 class AST final
 {
@@ -17,22 +18,23 @@ class AST final
 
         AST() = default;
 
-        INode* root_ = nullptr;
+        std::unique_ptr<paracl::INode> root_ = nullptr;
+
+        std::vector<std::unique_ptr<paracl::INode>> smart_nodes{};
 
         void Dump() const;
 
-        std::vector<paracl::INode*> nodes{};
+        // void MakeBinOp(Operators op_type);
 
-        ~AST() 
-        {
-            auto begin = nodes.begin(), end = nodes.end();
-
-            for (auto it = begin; it != end; ++it)
-                delete *it;
-        }
+        ~AST() = default;
 };
 
 //======================================================================================//
+
+// void AST::MakeBinOp(Operators op_type)
+// {
+
+// }
 
 //======================================================================================//
 

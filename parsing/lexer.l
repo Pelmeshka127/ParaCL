@@ -44,7 +44,7 @@ VAR     [a-zA-Z_][a-zA-Z_0-9_]*
 "print"             { /*cout << "key word <" << yytext << ">" << endl*/; return yy::parser::token::PRINT; }
 
 {DIGIT1}?{DIGIT}*   { /*cout << "number <" << yytext << ">" << endl*/; return yy::parser::token::DIGIT; }
-{VAR}               { /*cout << "variable <" << yytext << ">" << endl*/; return yy::parser::token::VAR; }
+{VAR}               { /*cout << "variable <" << yytext << ">" << endl*/; yy::parser::make_VAR(yytext); return yy::parser::token::VAR; }
 
 .                   { cout << " UNKNOWN <" << yytext << ">" << endl; return yy::parser::token::ERR; }
 
