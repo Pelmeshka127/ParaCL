@@ -33,8 +33,10 @@ class AST final
 
         Variable*   MakeVar(std::string name);
 
-        
         BinOp*      MakeBinOp(Operators op_type, INode* left = nullptr, INode* right = nullptr);
+
+        LogOp*      MakeLogOp(LogicalOperator log_type, INode* left = nullptr, INode* right = nullptr);
+
 
         ~AST() = default;
 };

@@ -46,6 +46,17 @@ BinOp* AST::MakeBinOp(Operators op_type, INode* left, INode* right)
 
 //======================================================================================//
 
+LogOp* AST::MakeLogOp(LogicalOperator log_type, INode* left, INode* right)
+{
+    auto node = std::make_unique<LogOp>(log_type, left, right);
+
+    smart_nodes.push_back(std::move(node));
+
+    return static_cast<LogOp*>(smart_nodes.back().get());
+}
+
+//======================================================================================//
+
 void AST::Dump() const
 {
     #ifdef DUMP

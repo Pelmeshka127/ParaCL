@@ -11,7 +11,7 @@ using std::endl;
 %}
 
 WS      [ \t\n\v]+
-DIGIT   [0-9]
+DIGIT   -|[0-9]
 DIGIT1  [1-9]
 VAR     [a-zA-Z_][a-zA-Z_0-9_]*
 

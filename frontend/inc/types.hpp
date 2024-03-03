@@ -30,7 +30,8 @@ enum class Operators {
     Asg,
 };
 
-enum class LogigalOperator {
+enum class LogicalOperator {
+    NoType,
     Above,
     EqAbove,
     Below,

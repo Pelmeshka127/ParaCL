@@ -53,12 +53,11 @@ parser::token_type yylex(parser::semantic_type* yylval,
 
 %token <int>          DIGIT
 %token <std::string>  VAR
-%nterm <int> equals expression plusminus multdiv lval logoperator
 %nterm print
 %nterm input
 %nterm if
 %nterm while
-%nterm <paracl::INode*> node nodedigit var
+%nterm <paracl::INode*> equal logoperator plusminus multdiv lval var
 
 %start program
 
@@ -67,79 +66,43 @@ parser::token_type yylex(parser::semantic_type* yylval,
 program: eqlist
 ;
 
-eqlist: /*equals SEMICOLON eqlist 
-    | print SEMICOLON eqlist
-    | input SEMICOLON eqlist
-    | if SEMICOLON eqlist*/
-    | node SEMICOLON eqlist
+eqlist: equal SEMICOLON eqlist
     | %empty
 ;
 
-node: var ASG nodedigit
+equal: var ASG logoperator
 {
     $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3);
 }
-
-equals: VAR ASG logoperator
-    { 
-        driver->vars_[$1] = $3;
-        std::cout << driver->vars_[$1] << std::endl;
-        /*driver->tree.nodes.push_back(new paracl::BinOp(paracl::Operators::Asg, new paracl::Variable($1), $3));*/
-    }
 ;
 
-expression: logoperator
+logoperator: logoperator EQUAL plusminus { $$ = driver->tree.MakeLogOp(paracl::LogicalOperator::Eq, $1, $3); }
+    | logoperator NOT_EQUAL plusminus { $$ = driver->tree.MakeLogOp(paracl::LogicalOperator::NotEq, $1, $3); }
+    | logoperator EQ_ABOVE plusminus { $$ = driver->tree.MakeLogOp(paracl::LogicalOperator::EqAbove, $1, $3); }
+    | logoperator EQ_BELOW plusminus { $$ = driver->tree.MakeLogOp(paracl::LogicalOperator::EqBelow, $1, $3); }
+    | logoperator ABOVE plusminus { $$ = driver->tree.MakeLogOp(paracl::LogicalOperator::Above, $1, $3); }
+    | logoperator BELOW plusminus { $$ = driver->tree.MakeLogOp(paracl::LogicalOperator::Below, $1, $3); }
+    | plusminus
+
+plusminus: plusminus PLUS multdiv { $$ = driver->tree.MakeBinOp(paracl::Operators::Plus, $1, $3); }
+    | plusminus MINUS multdiv { $$ = driver->tree.MakeBinOp(paracl::Operators::Minus, $1, $3); }
+    | multdiv
 ;
 
-logoperator: plusminus EQUAL plusminus { $$ = $1 == $3; }
-    | plusminus NOT_EQUAL plusminus { $$ = $1 != $3; }
-    | plusminus ABOVE plusminus { $$ = $1 > $3; }
-    | plusminus EQ_ABOVE plusminus { $$ = $1 >= $3; }
-    | plusminus BELOW plusminus { $$ = $1 < $3; }
-    | plusminus EQ_BELOW plusminus { $$ = $1 <= $3; }
-    | plusminus { $$ = $1; }
-;
-
-plusminus: plusminus PLUS multdiv { $$ = $1 + $3; }
-    | plusminus MINUS multdiv { $$ = $1 - $3; }
-    | multdiv { $$ = $1; }
-;
-
-multdiv: multdiv MULT lval { $$ = $1 * $3; }
-    | multdiv DIVIDE lval { $$ = $1 / $3; }
+multdiv: multdiv MULT lval { $$ = driver->tree.MakeBinOp(paracl::Operators::Mult, $1, $3); }
+    | plusminus DIVIDE lval { $$ = driver->tree.MakeBinOp(paracl::Operators::Divide, $1, $3); }
     | lval
 ;
 
-lval: DIGIT { $$ = $1; } 
-    | VAR { $$ = driver->vars_[$1]; }
-    | LEFT_BRACKET plusminus RIGHT_BRACKET { $$ = $2; }
+lval: DIGIT { $$ = driver->tree.MakeDigit($1); }
+    | VAR { $$ = driver->tree.MakeVar($1);}
+    | LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = $2; }
 ;
 
 var: VAR
 {
     $$ = driver->tree.MakeVar($1);
 }
-
-nodedigit: lval
-{ 
-    $$ = driver->tree.MakeDigit($1);
-}
-
-print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { std::cout << $3 << std::endl; }
-;
-
-input: VAR ASG INPUT
-{
-    int n{};
-
-    std::cin >> n;
-
-    std::cout << n << std::endl;
-
-    driver->vars_[$1] = n;
-}
-
-if: IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE eqlist RIGHT_BRACE
 ;
 
 %%

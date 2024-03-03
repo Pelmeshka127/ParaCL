@@ -9,6 +9,8 @@
 namespace paracl
 {
 
+template <typename T> std::string GetSign(const T type);
+
 //======================================================================================//
 
 class Variable final : public INode
@@ -84,6 +86,31 @@ class BinOp final : public INode
         INode* right_ = nullptr;
 
         Operators operator_type_ = Operators::NoType;
+};
+
+//======================================================================================//
+
+class LogOp : public INode
+{   
+    public:
+
+        LogOp(LogicalOperator type, INode* left = nullptr, INode* right = nullptr) 
+            : INode(Type_t::LogOperation), operator_type_{type}, left_{left}, right_{right} {}
+
+        void Dump(std::ofstream& graph_file) const override;
+
+        ~LogOp()
+        {
+            std::cout << "Deleting logoperator" << std::endl;
+        }
+
+    private:
+
+        INode* left_    = nullptr;
+
+        INode* right_   = nullptr;
+
+        LogicalOperator operator_type_ = LogicalOperator::NoType;
 };
 
 //======================================================================================//
