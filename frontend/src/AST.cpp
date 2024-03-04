@@ -57,6 +57,28 @@ LogOp* AST::MakeLogOp(LogicalOperator log_type, INode* left, INode* right)
 
 //======================================================================================//
 
+Print* AST::MakePrint(INode* expression)
+{
+    auto node = std::make_unique<Print>(expression);
+
+    smart_nodes.push_back(std::move(node));
+
+    return static_cast<Print*>(smart_nodes.back().get());
+}
+
+//======================================================================================//
+
+Input* AST::MakeInput(INode* var)
+{
+    auto node = std::make_unique<Input>(var);
+
+    smart_nodes.push_back(std::move(node));
+
+    return static_cast<Input*>(smart_nodes.back().get());
+}
+
+//======================================================================================//
+
 void AST::Dump() const
 {
     #ifdef DUMP
@@ -69,8 +91,6 @@ void AST::Dump() const
 
     graph_file << "   tree[shape = Mrecord, style = filled, color = \"white\", style = filled, fontcolor = \"white\", fillcolor = \"blueviolet\", "
                         "label = \"AST Tree\"];\n";
-
-    // root_->Dump(graph_file);
 
     root_.get()->Dump(graph_file);
     
@@ -87,7 +107,6 @@ void AST::Dump() const
     system(call_graph);
 
     #endif
-
 }
 
 //======================================================================================//

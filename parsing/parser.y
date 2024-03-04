@@ -53,11 +53,9 @@ parser::token_type yylex(parser::semantic_type* yylval,
 
 %token <int>          DIGIT
 %token <std::string>  VAR
-%nterm print
-%nterm input
 %nterm if
 %nterm while
-%nterm <paracl::INode*> equal logoperator plusminus multdiv lval var
+%nterm <paracl::INode*> equal logoperator plusminus multdiv lval var input print
 
 %start program
 
@@ -70,10 +68,9 @@ eqlist: equal SEMICOLON eqlist
     | %empty
 ;
 
-equal: var ASG logoperator
-{
-    $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3);
-}
+equal: var ASG logoperator { $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3); }
+    | print { $$ = $1; }
+    | input { $$ = $1; }
 ;
 
 logoperator: logoperator EQUAL plusminus { $$ = driver->tree.MakeLogOp(paracl::LogicalOperator::Eq, $1, $3); }
@@ -99,10 +96,13 @@ lval: DIGIT { $$ = driver->tree.MakeDigit($1); }
     | LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = $2; }
 ;
 
-var: VAR
-{
-    $$ = driver->tree.MakeVar($1);
-}
+var: VAR { $$ = driver->tree.MakeVar($1); }
+;
+
+print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = driver->tree.MakePrint($3); }
+;
+
+input: var ASG INPUT { $$ = driver->tree.MakeInput($1); }
 ;
 
 %%

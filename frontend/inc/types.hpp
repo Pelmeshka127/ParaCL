@@ -10,8 +10,9 @@ enum class Type_t {
     Variable,
     Operation,
     LogOperation,
-    KeyOperation,
+    KeyWord,
     Bracket,
+    Scope,
 };
 
 enum class Brackets {

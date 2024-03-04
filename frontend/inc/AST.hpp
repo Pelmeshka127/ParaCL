@@ -37,6 +37,10 @@ class AST final
 
         LogOp*      MakeLogOp(LogicalOperator log_type, INode* left = nullptr, INode* right = nullptr);
 
+        Print*      MakePrint(INode* expression = nullptr);
+
+        Input*      MakeInput(INode* var = nullptr);
+
 
         ~AST() = default;
 };

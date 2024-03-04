@@ -147,7 +147,53 @@ void LogOp::Dump(std::ofstream& graph_file) const
 
     #else
 
-        std::cout << "The operation is " << operator_type_ << std::endl;
+        std::cout << "The log operation is " << operator_type_ << std::endl;
+
+    #endif
+}
+
+//======================================================================================//
+
+void Print::Dump(std::ofstream& graph_file) const
+{
+    #ifdef DUMP
+
+        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"aquamarine\"";
+
+        graph_file << "   label = \" {Print}\"];\n";
+
+        if (expression_)
+            graph_file << "  \"" << this << "\" -> \"" << expression_ << "\" [color = \"black\"];\n";
+
+        if (expression_)
+            expression_->Dump(graph_file);
+
+    #else
+
+        std::cout << "The key word is " << operator_type_ << std::endl;
+
+    #endif
+}
+
+//======================================================================================//
+
+void Input::Dump(std::ofstream& graph_file) const
+{
+    #ifdef DUMP
+
+        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"aquamarine\"";
+
+        graph_file << "   label = \" {Input}\"];\n";
+
+        if (var_)
+            graph_file << "  \"" << this << "\" -> \"" << var_ << "\" [color = \"black\"];\n";
+
+        if (var_)
+            var_->Dump(graph_file);
+
+    #else
+
+        std::cout << "The key word is " << operator_type_ << std::endl;
 
     #endif
 }

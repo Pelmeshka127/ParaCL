@@ -69,16 +69,6 @@ class BinOp final : public INode
             std::cout << "Deleting operator" << std::endl;
         }
 
-        void SetLeft(INode* node)
-        {
-            left_ = node;
-        }
-
-        void SetRight(INode* node)
-        {
-            right_ = node;
-        }
-
     private:
 
         INode* left_  = nullptr;
@@ -111,6 +101,71 @@ class LogOp : public INode
         INode* right_   = nullptr;
 
         LogicalOperator operator_type_ = LogicalOperator::NoType;
+};
+
+//======================================================================================//
+
+class Print : public INode
+{
+    public:
+
+        Print(INode* expression) :
+            INode(Type_t::KeyWord), expression_{expression} {}
+
+        void Dump(std::ofstream& graph_file) const override;
+
+        ~Print()
+        {
+            std::cout << "Deleting print" << std::endl;
+        }
+
+    private:
+
+        INode* expression_ = nullptr;
+};
+
+//======================================================================================//
+
+class Input : public INode
+{
+    public:
+
+        Input(INode* var) :
+            INode(Type_t::KeyWord), var_{var} {}
+
+        void Dump(std::ofstream& graph_file) const override;
+
+        ~Input()
+        {
+            std::cout << "Deleting Input" << std::endl;
+        }
+
+    private:
+
+        INode* var_ = nullptr;
+};
+
+//======================================================================================//
+
+class Scope : public INode
+{
+    public:
+
+        Scope(INode* left = nullptr, Scope* right = nullptr) :
+            INode(Type_t::Scope), left_{left}, right_{right} {}
+
+        void Dump(std::ofstream& graph_file) const override;
+
+        ~Scope()
+        {
+            std::cout << "Deleting scope" << std::endl;
+        }
+
+    private:
+
+        INode* left_    = nullptr;
+
+        Scope* right_   = nullptr;
 };
 
 //======================================================================================//
