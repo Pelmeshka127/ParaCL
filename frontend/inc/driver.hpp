@@ -24,8 +24,6 @@ class Driver
 
         paracl::AST tree;
 
-        std::map<std::string, int> vars_;
-
         paracl::Scope* current_scope;
 
     public:
@@ -34,12 +32,20 @@ class Driver
 
         ~Driver() { delete lexer_; };
         
-        parser::token_type yylex(parser::semantic_type* yylval, yy::location* loc) 
+        parser::token_type yylex(parser::semantic_type* yylval, parser::location_type* loc) 
         {
             parser::token_type tt = static_cast<parser::token_type>(lexer_->yylex());
             
             if (tt == yy::parser::token_type::DIGIT)
                 yylval->as<int>() = std::stoi(lexer_->YYText());
+
+            if (tt == yy::parser::token_type::VAR)
+            {
+                std::string var_name = lexer_->YYText();
+                parser::semantic_type tmp{};
+                tmp.as<std::string>() = var_name;
+                yylval->swap<std::string>(tmp);
+            }
             
             return tt;
         }

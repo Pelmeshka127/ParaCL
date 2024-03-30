@@ -45,7 +45,7 @@ VAR     [a-zA-Z_][a-zA-Z_0-9_]*
 "print"             { return yy::parser::token::PRINT; }
 
 {DIGIT1}?{DIGIT}*   { return yy::parser::token::DIGIT; }
-{VAR}               { /*yy::parser::make_VAR(yytext)*/; return yy::parser::token::VAR; }
+{VAR}               { return yy::parser::token::VAR; }
 
 .                   { cout << " UNKNOWN <" << yytext << ">" << endl; return yy::parser::token::ERR; }
 

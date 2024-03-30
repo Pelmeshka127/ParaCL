@@ -2,10 +2,20 @@ digraph Tree
 {
    rankdir = HR;
    tree[shape = Mrecord, style = filled, color = "white", style = filled, fontcolor = "white", fillcolor = "blueviolet", label = "AST Tree"];
-   "0x152606cc0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "coral1"   label = " {SCOPE}"];
-  "0x152606cc0" -> "0x152606ca0" [color = "black"];
-   "0x152606ca0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "aquamarine"   label = " {Print}"];
-  "0x152606ca0" -> "0x152606c70" [color = "black"];
-   "0x152606c70"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "green",   label = " {VARIABLE | Name = }"];
-   tree -> "0x152606cc0" [color = "blueviolet"];
+   "0x14b704170"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "coral1"   label = " {SCOPE}"];
+  "0x14b704170" -> "0x14b704140" [color = "black"];
+   "0x14b704140"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "red"   label = " {OPERATOR | =}"];
+  "0x14b704140" -> "0x14b704080" [color = "black"];
+  "0x14b704140" -> "0x14b704110" [color = "black"];
+   "0x14b704080"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "green",   label = " {VARIABLE | x}"];
+   "0x14b704110"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "aqua"   label = " {LOGICAL OPERATOR | ==}"];
+  "0x14b704110" -> "0x14b7040b0" [color = "black"];
+  "0x14b704110" -> "0x14b7040e0" [color = "black"];
+   "0x14b7040b0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "yellow",   label = " {DIGIT | 2}"];
+   "0x14b7040e0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "aqua"   label = " {LOGICAL OPERATOR | !=}"];
+  "0x14b7040e0" -> "0x14b7040c0" [color = "black"];
+  "0x14b7040e0" -> "0x14b7040d0" [color = "black"];
+   "0x14b7040c0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "yellow",   label = " {DIGIT | 5}"];
+   "0x14b7040d0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "yellow",   label = " {DIGIT | 4}"];
+   tree -> "0x14b704170" [color = "blueviolet"];
 }
