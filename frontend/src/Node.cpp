@@ -200,4 +200,33 @@ void Input::Dump(std::ofstream& graph_file) const
 
 //======================================================================================//
 
+void Scope::Dump(std::ofstream& graph_file) const
+{
+    #ifdef DUMP
+
+        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"coral1\"";
+
+        graph_file << "   label = \" {SCOPE}\"];\n";
+
+        if (left_)
+            graph_file << "  \"" << this << "\" -> \"" << left_ << "\" [color = \"black\"];\n";
+
+        if (right_)
+            graph_file << "  \"" << this << "\" -> \"" << right_ << "\" [color = \"black\"];\n";
+
+        if (left_)
+            left_->Dump(graph_file);
+
+        if (right_)
+            right_->Dump(graph_file);
+
+    #else
+
+        std::cout << "Just Scope" << std::endl;
+
+    #endif
+}
+
+//======================================================================================//
+
 } // end of paracl namespace

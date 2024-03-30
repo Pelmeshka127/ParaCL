@@ -15,15 +15,17 @@
 namespace yy { class Driver; }
 }
 
+%locations
+
 %code
 {
 #include "driver.hpp"
 
-namespace yy {
-
-parser::token_type yylex(parser::semantic_type* yylval,                         
-                         Driver* driver);
+namespace yy 
+{
+    parser::token_type yylex(parser::semantic_type* yylval, yy::parser::location_type* loc, Driver* driver);
 }
+
 }
 
 %token
@@ -55,20 +57,22 @@ parser::token_type yylex(parser::semantic_type* yylval,
 %token <std::string>  VAR
 %nterm if
 %nterm while
-%nterm <paracl::INode*> equal logoperator plusminus multdiv lval var input print
+%nterm <paracl::INode*> logoperator plusminus multdiv lval var input print
+%nterm <paracl::INode*> stmt stmts
 
 %start program
 
 %%
 
-program: eqlist
+program: stmts
 ;
 
-eqlist: equal SEMICOLON eqlist
-    | %empty
+stmts: %empty {}
+    | stmts SEMICOLON {}
+    | stmts stmt { $$ = driver->tree.MakeScope($2); }
 ;
 
-equal: var ASG logoperator { $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3); }
+stmt: var ASG logoperator { $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3); }
     | print { $$ = $1; }
     | input { $$ = $1; }
 ;
@@ -96,7 +100,10 @@ lval: DIGIT { $$ = driver->tree.MakeDigit($1); }
     | LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = $2; }
 ;
 
-var: VAR { $$ = driver->tree.MakeVar($1); }
+var: VAR { 
+    $$ = driver->tree.MakeVar($1); 
+    std::cout << "Var name is: " << $1 << std::endl;
+    }
 ;
 
 print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = driver->tree.MakePrint($3); }
@@ -110,11 +117,11 @@ input: var ASG INPUT { $$ = driver->tree.MakeInput($1); }
 namespace yy 
 {
 
-parser::token_type yylex(parser::semantic_type* yylval, Driver* driver)
+parser::token_type yylex(parser::semantic_type* yylval, yy::parser::location_type* loc, Driver* driver)
 {
-    return driver->yylex(yylval);
+    return driver->yylex(yylval, loc);
 }
 
-void parser::error(const std::string&){}
+void parser::error(const location_type& l, const std::string& m){}
 
 }

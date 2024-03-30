@@ -79,6 +79,17 @@ Input* AST::MakeInput(INode* var)
 
 //======================================================================================//
 
+Scope* AST::MakeScope(INode* left, Scope* right)
+{
+    auto node = std::make_unique<Scope>(left, right);
+
+    smart_nodes.push_back(std::move(node));
+
+    return static_cast<Scope*>(smart_nodes.back().get());
+}
+
+//======================================================================================//
+
 void AST::Dump() const
 {
     #ifdef DUMP

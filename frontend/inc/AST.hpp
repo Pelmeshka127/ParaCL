@@ -41,6 +41,8 @@ class AST final
 
         Input*      MakeInput(INode* var = nullptr);
 
+        Scope*      MakeScope(INode* left = nullptr, Scope* right = nullptr);
+
 
         ~AST() = default;
 };

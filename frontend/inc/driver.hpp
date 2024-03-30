@@ -6,6 +6,7 @@
 #include <FlexLexer.h>
 
 #include "parser.hpp"
+#include "location.hh"
 #include "AST.hpp"
 
 namespace yy
@@ -19,15 +20,21 @@ class Driver
 
     public:
 
+        yy::location location;
+
         paracl::AST tree;
 
         std::map<std::string, int> vars_;
+
+        paracl::Scope* current_scope;
+
+    public:
         
         Driver(FlexLexer* lexer) : lexer_{lexer} {}
 
         ~Driver() { delete lexer_; };
-
-        parser::token_type yylex(parser::semantic_type* yylval) 
+        
+        parser::token_type yylex(parser::semantic_type* yylval, yy::location* loc) 
         {
             parser::token_type tt = static_cast<parser::token_type>(lexer_->yylex());
             
