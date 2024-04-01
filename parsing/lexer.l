@@ -42,6 +42,7 @@ VAR     [a-zA-Z_][a-zA-Z_0-9_]*
 
 "while"             { return yy::parser::token::WHILE; }
 "if"                { return yy::parser::token::IF; }
+"else"              { return yy::parser::token::ELSE; }
 "print"             { return yy::parser::token::PRINT; }
 
 {DIGIT1}?{DIGIT}*   { return yy::parser::token::DIGIT; }

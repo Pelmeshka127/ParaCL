@@ -55,10 +55,11 @@ namespace yy
 
 %token <int>          DIGIT
 %token <std::string>  VAR
-%nterm if
-%nterm while
-%nterm <paracl::INode*> logoperator plusminus multdiv lval var input print
-%nterm <paracl::INode*> stmt stmts
+%nterm <paracl::INode*> logoperator plusminus multdiv lval var 
+%nterm <paracl::INode*> input print
+%nterm <paracl::INode*> if else while
+%nterm <paracl::INode*> stmt
+%nterm <paracl::Scope*> stmts
 
 %start program
 
@@ -67,9 +68,8 @@ namespace yy
 program: stmts
 ;
 
-stmts: %empty {}
-    | stmts SEMICOLON {}
-    | stmts stmt { $$ = driver->tree.MakeScope($2); }
+stmts: stmt SEMICOLON stmts { $$ = driver->tree.MakeScope($1, $3); }
+    | %empty {}
 ;
 
 stmt: var ASG logoperator { $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3); }
@@ -100,16 +100,22 @@ lval: DIGIT { $$ = driver->tree.MakeDigit($1); }
     | LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = $2; }
 ;
 
-var: VAR { 
-    $$ = driver->tree.MakeVar($1); 
-    std::cout << "Var name is: " << $1 << std::endl;
-    }
+var: VAR { $$ = driver->tree.MakeVar($1); std::cout << "Var name is: " << $1 << std::endl; }
 ;
 
 print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = driver->tree.MakePrint($3); }
 ;
 
 input: var ASG INPUT { $$ = driver->tree.MakeInput($1); }
+;
+
+if: LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE
+;
+
+else: LEFT_BRACE stmts RIGHT_BRACE
+;
+
+while: LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE
 ;
 
 %%

@@ -158,7 +158,7 @@ class Scope : public INode
 
         ~Scope()
         {
-            std::cout << "Deleting scope" << std::endl;
+            std::cout << "Deleting Scope" << std::endl;
         }
 
     private:
