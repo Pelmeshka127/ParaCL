@@ -42,9 +42,11 @@ enum class LogicalOperator {
 };
 
 enum class KeyWords {
+    NoType,
     Input,
     Print,
     If,
+    Else,
     While,
 };  
 

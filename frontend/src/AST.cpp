@@ -90,6 +90,17 @@ Scope* AST::MakeScope(INode* left, Scope* right)
 
 //======================================================================================//
 
+Loop* AST::MakeLoop(KeyWords type, INode* left, INode* right)
+{
+    auto node = std::make_unique<Loop>(type, left, right);
+
+    smart_nodes.push_back(std::move(node));
+
+    return static_cast<Loop*>(smart_nodes.back().get());
+}
+
+//======================================================================================//
+
 void AST::Dump() const
 {
     #ifdef DUMP

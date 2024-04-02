@@ -49,6 +49,7 @@ namespace yy
     RIGHT_BRACE   "}"
     WHILE         "while"
     IF            "if"
+    ELSE          "else"
     PRINT         "print"
     ERR
 ;
@@ -68,13 +69,14 @@ namespace yy
 program: stmts
 ;
 
-stmts: stmt SEMICOLON stmts { $$ = driver->tree.MakeScope($1, $3); }
+stmts: stmt stmts { $$ = driver->tree.MakeScope($1, $2); }
     | %empty {}
 ;
 
-stmt: var ASG logoperator { $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3); }
-    | print { $$ = $1; }
-    | input { $$ = $1; }
+stmt: var ASG logoperator SEMICOLON { $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3); }
+    | print SEMICOLON { $$ = $1; }
+    | input SEMICOLON { $$ = $1; }
+    | if { $$ = $1; }
 ;
 
 logoperator: logoperator EQUAL plusminus { $$ = driver->tree.MakeLogOp(paracl::LogicalOperator::Eq, $1, $3); }
@@ -109,7 +111,8 @@ print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = driver->tree.MakePrin
 input: var ASG INPUT { $$ = driver->tree.MakeInput($1); }
 ;
 
-if: LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE
+if: IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE 
+    {$$ = driver->tree.MakeLoop(paracl::KeyWords::If, $3, $6); }
 ;
 
 else: LEFT_BRACE stmts RIGHT_BRACE

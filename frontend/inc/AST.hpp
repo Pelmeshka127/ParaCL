@@ -43,6 +43,8 @@ class AST final
 
         Scope*      MakeScope(INode* left = nullptr, Scope* right = nullptr);
 
+        Loop*       MakeLoop(KeyWords type, INode* left = nullptr, INode* right = nullptr);
+
 
         ~AST() = default;
 };

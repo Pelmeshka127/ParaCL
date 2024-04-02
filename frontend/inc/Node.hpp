@@ -11,6 +11,8 @@ namespace paracl
 
 template <typename T> std::string GetSign(const T type);
 
+std::string GetKeyWord(const KeyWords type);
+
 //======================================================================================//
 
 class Variable final : public INode
@@ -166,6 +168,32 @@ class Scope : public INode
         INode* left_    = nullptr;
 
         Scope* right_   = nullptr;
+};
+
+//======================================================================================//
+
+class Loop : public INode
+{
+    public:
+
+        Loop(KeyWords type = KeyWords::NoType, INode* left = nullptr, INode* right = nullptr) :
+            INode(Type_t::KeyWord), type_{type}, left_{left}, right_{right} {}
+
+        void Dump(std::ofstream& graph_file) const override;
+
+        ~Loop()
+        {
+            std::cout << "Deleting Loop" << std::endl;
+        }
+
+
+    private:
+
+        INode* left_ = nullptr;
+
+        INode* right_ = nullptr;
+
+        KeyWords type_ = KeyWords::NoType;
 };
 
 //======================================================================================//
