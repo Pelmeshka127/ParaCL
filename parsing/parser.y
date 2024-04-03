@@ -77,6 +77,7 @@ stmt: var ASG logoperator SEMICOLON { $$ = driver->tree.MakeBinOp(paracl::Operat
     | print SEMICOLON { $$ = $1; }
     | input SEMICOLON { $$ = $1; }
     | if { $$ = $1; }
+    | while { $$ = $1; }
 ;
 
 logoperator: logoperator EQUAL plusminus { $$ = driver->tree.MakeLogOp(paracl::LogicalOperator::Eq, $1, $3); }
@@ -112,13 +113,17 @@ input: var ASG INPUT { $$ = driver->tree.MakeStatement(paracl::KeyWords::Input, 
 ;
 
 if: IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE 
-    {$$ = driver->tree.MakeStatement(paracl::KeyWords::If, $3, $6); }
+    {$$ = driver->tree.MakeStatement(paracl::KeyWords::If, driver->tree.MakeScope($3, $6)); }
+    | IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE else
+    { $$ = driver->tree.MakeStatement(paracl::KeyWords::If, driver->tree.MakeScope($3, $6), $8); }
 ;
 
-else: LEFT_BRACE stmts RIGHT_BRACE
+else: ELSE LEFT_BRACE stmts RIGHT_BRACE
+    { $$ = driver->tree.MakeStatement(paracl::KeyWords::Else, $3); }
 ;
 
-while: LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE
+while: WHILE LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE
+    { $$ = driver->tree.MakeStatement(paracl::KeyWords::While, $3, $6); }
 ;
 
 %%

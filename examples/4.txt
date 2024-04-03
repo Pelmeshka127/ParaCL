@@ -1,1 +1,17 @@
-print(x + 3 * (y - 5));
+x = ?;
+
+y = ?;
+
+if (x > 0) {
+    x = x + 1;
+}
+
+else {
+    x = x - 1;
+}
+
+if (y == 5) {
+    print(y);
+}
+
+print(x);
