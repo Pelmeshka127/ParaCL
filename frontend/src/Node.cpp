@@ -7,7 +7,7 @@ namespace paracl
 
 //======================================================================================//
 
-template <> std::string GetSign(const Operators type)
+template <> std::string GetWord(const Operators type)
 {
     switch(type)
     {
@@ -33,7 +33,7 @@ template <> std::string GetSign(const Operators type)
 
 //======================================================================================//
 
-template <> std::string GetSign(const LogicalOperator type)
+template <> std::string GetWord(const LogicalOperator type)
 {
     switch(type)
     {
@@ -62,7 +62,7 @@ template <> std::string GetSign(const LogicalOperator type)
 
 //======================================================================================//
 
-std::string GetKeyWord(const KeyWords type)
+template <> std::string GetWord(const KeyWords type)
 {
     switch(type)
     {
@@ -73,7 +73,39 @@ std::string GetKeyWord(const KeyWords type)
             return "ELSE";
 
         case KeyWords::While:
-            return "While";
+            return "WHILE";
+
+        case KeyWords::Input:
+            return "INPUT";
+
+        case KeyWords::Print:
+            return "PRINT";
+
+        default:
+            return "";
+    }
+}
+
+//======================================================================================//
+
+std::string GetKeyWordColor(const KeyWords type)
+{
+    switch(type)
+    {
+        case KeyWords::If:
+            return "palevioletred1";
+
+        case KeyWords::Else:
+            return "palevioletred1";
+
+        case KeyWords::While:
+            return "palevioletred1";
+
+        case KeyWords::Input:
+            return "khaki1";
+
+        case KeyWords::Print:
+            return "khaki1";
 
         default:
             return "";
@@ -88,7 +120,7 @@ void Digit::Dump(std::ofstream& graph_file) const
     
         graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"yellow\",";
         
-        graph_file << "   label = \" {DIGIT | " << value_ << "}\"];\n";
+        graph_file << "   label = \" {" << value_ << "}\"];\n";
     
     #else
 
@@ -122,7 +154,7 @@ void BinOp::Dump(std::ofstream& graph_file) const
 
         graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"red\"";
 
-        graph_file << "   label = \" {" << GetSign<Operators>(operator_type_) << "}\"];\n";
+        graph_file << "   label = \" {" << GetWord(operator_type_) << "}\"];\n";
 
         if (left_)
             graph_file << "  \"" << this << "\" -> \"" << left_ << "\" [color = \"black\"];\n";
@@ -151,7 +183,7 @@ void LogOp::Dump(std::ofstream& graph_file) const
 
         graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"aqua\"";
 
-        graph_file << "   label = \" {" << GetSign<LogicalOperator>(operator_type_) << "}\"];\n";
+        graph_file << "   label = \" {" << GetWord(operator_type_) << "}\"];\n";
 
         if (left_)
             graph_file << "  \"" << this << "\" -> \"" << left_ << "\" [color = \"black\"];\n";
@@ -168,52 +200,6 @@ void LogOp::Dump(std::ofstream& graph_file) const
     #else
 
         std::cout << "The log operation is " << operator_type_ << std::endl;
-
-    #endif
-}
-
-//======================================================================================//
-
-void Print::Dump(std::ofstream& graph_file) const
-{
-    #ifdef DUMP
-
-        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"aquamarine\"";
-
-        graph_file << "   label = \" {Print}\"];\n";
-
-        if (expression_)
-            graph_file << "  \"" << this << "\" -> \"" << expression_ << "\" [color = \"black\"];\n";
-
-        if (expression_)
-            expression_->Dump(graph_file);
-
-    #else
-
-        std::cout << "The key word is " << operator_type_ << std::endl;
-
-    #endif
-}
-
-//======================================================================================//
-
-void Input::Dump(std::ofstream& graph_file) const
-{
-    #ifdef DUMP
-
-        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"aquamarine\"";
-
-        graph_file << "   label = \" {Input}\"];\n";
-
-        if (var_)
-            graph_file << "  \"" << this << "\" -> \"" << var_ << "\" [color = \"black\"];\n";
-
-        if (var_)
-            var_->Dump(graph_file);
-
-    #else
-
-        std::cout << "The key word is " << operator_type_ << std::endl;
 
     #endif
 }
@@ -249,13 +235,13 @@ void Scope::Dump(std::ofstream& graph_file) const
 
 //======================================================================================//
 
-void Loop::Dump(std::ofstream& graph_file) const
+void Statement::Dump(std::ofstream& graph_file) const
 {
     #ifdef DUMP
 
-        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"deeppink4\"";
+        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"" << GetKeyWordColor(type_) << "\"";
 
-        graph_file << "   label = \" {" << GetKeyWord(type_) << "}\"];\n";
+        graph_file << "   label = \" {" << GetWord(type_) << "}\"];\n";
 
         if (left_)
             graph_file << "  \"" << this << "\" -> \"" << left_ << "\" [color = \"black\"];\n";

@@ -15,4 +15,4 @@ while (iters > 0)
     iters = iters - 1;
 }
 
-print snd;
+print (snd);

@@ -37,13 +37,9 @@ class AST final
 
         LogOp*      MakeLogOp(LogicalOperator log_type, INode* left = nullptr, INode* right = nullptr);
 
-        Print*      MakePrint(INode* expression = nullptr);
-
-        Input*      MakeInput(INode* var = nullptr);
-
         Scope*      MakeScope(INode* left = nullptr, Scope* right = nullptr);
 
-        Loop*       MakeLoop(KeyWords type, INode* left = nullptr, INode* right = nullptr);
+        Statement*  MakeStatement(KeyWords type, INode* left = nullptr, INode* right = nullptr);
 
 
         ~AST() = default;

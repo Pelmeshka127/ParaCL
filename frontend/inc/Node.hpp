@@ -9,9 +9,9 @@
 namespace paracl
 {
 
-template <typename T> std::string GetSign(const T type);
+template <typename T> std::string GetWord(const T type);
 
-std::string GetKeyWord(const KeyWords type);
+std::string GetKeyWordColor(const KeyWords type);
 
 //======================================================================================//
 
@@ -19,7 +19,7 @@ class Variable final : public INode
 {
     public:
 
-        Variable(std::string name = "") 
+        Variable(const std::string name = "") 
             : INode(Type_t::Variable), name_{name} {}
 
         void Dump(std::ofstream& graph_file) const override;
@@ -40,7 +40,7 @@ class Digit final : public INode
 {
     public:
 
-        Digit(int value = 0) 
+        Digit(const int value = 0) 
             : INode(Type_t::Digit), value_{value} {}
 
         void Dump(std::ofstream& graph_file) const override;
@@ -61,7 +61,7 @@ class BinOp final : public INode
 {
     public:
 
-        BinOp(Operators type, INode* left = nullptr, INode* right = nullptr) 
+        BinOp(const Operators type, INode* const left = nullptr, INode* const right = nullptr) 
             : INode(Type_t::Operation), operator_type_{type}, left_{left}, right_{right} {}
 
         void Dump(std::ofstream& graph_file) const override;
@@ -82,11 +82,11 @@ class BinOp final : public INode
 
 //======================================================================================//
 
-class LogOp : public INode
+class LogOp final : public INode
 {   
     public:
 
-        LogOp(LogicalOperator type, INode* left = nullptr, INode* right = nullptr) 
+        LogOp(const LogicalOperator type, INode* const left = nullptr, INode* const right = nullptr) 
             : INode(Type_t::LogOperation), operator_type_{type}, left_{left}, right_{right} {}
 
         void Dump(std::ofstream& graph_file) const override;
@@ -107,53 +107,11 @@ class LogOp : public INode
 
 //======================================================================================//
 
-class Print : public INode
+class Scope final : public INode
 {
     public:
 
-        Print(INode* expression) :
-            INode(Type_t::KeyWord), expression_{expression} {}
-
-        void Dump(std::ofstream& graph_file) const override;
-
-        ~Print()
-        {
-            std::cout << "Deleting print" << std::endl;
-        }
-
-    private:
-
-        INode* expression_ = nullptr;
-};
-
-//======================================================================================//
-
-class Input : public INode
-{
-    public:
-
-        Input(INode* var) :
-            INode(Type_t::KeyWord), var_{var} {}
-
-        void Dump(std::ofstream& graph_file) const override;
-
-        ~Input()
-        {
-            std::cout << "Deleting Input" << std::endl;
-        }
-
-    private:
-
-        INode* var_ = nullptr;
-};
-
-//======================================================================================//
-
-class Scope : public INode
-{
-    public:
-
-        Scope(INode* left = nullptr, Scope* right = nullptr) :
+        Scope(INode* const left = nullptr, Scope* const right = nullptr) :
             INode(Type_t::Scope), left_{left}, right_{right} {}
 
         void Dump(std::ofstream& graph_file) const override;
@@ -172,18 +130,18 @@ class Scope : public INode
 
 //======================================================================================//
 
-class Loop : public INode
+class Statement final : public INode
 {
     public:
 
-        Loop(KeyWords type = KeyWords::NoType, INode* left = nullptr, INode* right = nullptr) :
+        Statement(const KeyWords type = KeyWords::NoType, INode* const left = nullptr, INode* const right = nullptr) :
             INode(Type_t::KeyWord), type_{type}, left_{left}, right_{right} {}
 
         void Dump(std::ofstream& graph_file) const override;
 
-        ~Loop()
+        ~Statement()
         {
-            std::cout << "Deleting Loop" << std::endl;
+            std::cout << "Deleting Statement" << std::endl;
         }
 
 

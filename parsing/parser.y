@@ -105,14 +105,14 @@ lval: DIGIT { $$ = driver->tree.MakeDigit($1); }
 var: VAR { $$ = driver->tree.MakeVar($1); std::cout << "Var name is: " << $1 << std::endl; }
 ;
 
-print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = driver->tree.MakePrint($3); }
+print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = driver->tree.MakeStatement(paracl::KeyWords::Print, $3); }
 ;
 
-input: var ASG INPUT { $$ = driver->tree.MakeInput($1); }
+input: var ASG INPUT { $$ = driver->tree.MakeStatement(paracl::KeyWords::Input, $1); }
 ;
 
 if: IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE 
-    {$$ = driver->tree.MakeLoop(paracl::KeyWords::If, $3, $6); }
+    {$$ = driver->tree.MakeStatement(paracl::KeyWords::If, $3, $6); }
 ;
 
 else: LEFT_BRACE stmts RIGHT_BRACE

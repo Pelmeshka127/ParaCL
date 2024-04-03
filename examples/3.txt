@@ -1,1 +1,18 @@
-x = 2 == (5 != 4);
+fst = 0;
+
+snd = 0;
+
+iters = ?;
+
+if (iters == 0)
+{
+    tmp = fst;
+
+    fst = snd;
+
+    snd = snd + tmp;
+
+    iters = iters - 1;
+}
+
+print (snd);

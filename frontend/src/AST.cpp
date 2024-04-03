@@ -57,28 +57,6 @@ LogOp* AST::MakeLogOp(LogicalOperator log_type, INode* left, INode* right)
 
 //======================================================================================//
 
-Print* AST::MakePrint(INode* expression)
-{
-    auto node = std::make_unique<Print>(expression);
-
-    smart_nodes.push_back(std::move(node));
-
-    return static_cast<Print*>(smart_nodes.back().get());
-}
-
-//======================================================================================//
-
-Input* AST::MakeInput(INode* var)
-{
-    auto node = std::make_unique<Input>(var);
-
-    smart_nodes.push_back(std::move(node));
-
-    return static_cast<Input*>(smart_nodes.back().get());
-}
-
-//======================================================================================//
-
 Scope* AST::MakeScope(INode* left, Scope* right)
 {
     auto node = std::make_unique<Scope>(left, right);
@@ -90,13 +68,13 @@ Scope* AST::MakeScope(INode* left, Scope* right)
 
 //======================================================================================//
 
-Loop* AST::MakeLoop(KeyWords type, INode* left, INode* right)
+Statement* AST::MakeStatement(KeyWords type, INode* left, INode* right)
 {
-    auto node = std::make_unique<Loop>(type, left, right);
+    auto node = std::make_unique<Statement>(type, left, right);
 
     smart_nodes.push_back(std::move(node));
 
-    return static_cast<Loop*>(smart_nodes.back().get());
+    return static_cast<Statement*>(smart_nodes.back().get());
 }
 
 //======================================================================================//
