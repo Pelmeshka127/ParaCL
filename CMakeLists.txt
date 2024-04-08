@@ -14,11 +14,15 @@ add_flex_bison_dependency(lexer parser)
 
 aux_source_directory(./frontend/src SRC_FRONTEND)
 
-add_executable(paracl main.cpp ${SRC_FRONTEND} ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
+aux_source_directory(./backend/src SRC_BACKEND)
+
+add_executable(paracl main.cpp ${SRC_FRONTEND} ${SRC_BACKEND} ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
 
 target_compile_features(paracl PRIVATE cxx_std_17)
 
 include_directories(frontend/inc)
+
+include_directories(backend/inc)
 
 target_include_directories(paracl PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 

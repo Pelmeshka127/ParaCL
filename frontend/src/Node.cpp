@@ -38,19 +38,19 @@ template <> std::string GetWord(const LogicalOperator type)
     switch(type)
     {
         case LogicalOperator::Above:
-            return ">";
+            return "&gt;";
 
         case LogicalOperator::Below:
-            return "<";
+            return "&lt;";
 
         case LogicalOperator::Eq:
             return "==";
 
         case LogicalOperator::EqAbove:
-            return ">=";
+            return "&gt;=";
 
         case LogicalOperator::EqBelow:
-            return "<=";
+            return "&lt;=";
 
         case LogicalOperator::NotEq:
             return "!=";
@@ -183,7 +183,7 @@ void LogOp::Dump(std::ofstream& graph_file) const
 
         graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"aqua\"";
 
-        graph_file << "   label = \" {" << GetWord(operator_type_) << "}\"];\n";
+        graph_file << "   label = \"" << GetWord(operator_type_) << "\"];\n";
 
         if (left_)
             graph_file << "  \"" << this << "\" -> \"" << left_ << "\" [color = \"black\"];\n";

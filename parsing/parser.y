@@ -10,8 +10,6 @@
 #include <iostream>
 #include <string>
 #include "AST.hpp"
-
-// forward decl of argument to parser
 namespace yy { class Driver; }
 }
 
@@ -112,10 +110,12 @@ print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = driver->tree.MakeStat
 input: var ASG INPUT { $$ = driver->tree.MakeStatement(paracl::KeyWords::Input, $1); }
 ;
 
-if: IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE 
-    {$$ = driver->tree.MakeStatement(paracl::KeyWords::If, driver->tree.MakeScope($3, $6)); }
-    | IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE else
-    { $$ = driver->tree.MakeStatement(paracl::KeyWords::If, driver->tree.MakeScope($3, $6), $8); }
+if: IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE { 
+    $$ = driver->tree.MakeStatement(paracl::KeyWords::If, driver->tree.MakeScope($3, $6)); 
+    }
+    | IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE else { 
+        $$ = driver->tree.MakeStatement(paracl::KeyWords::If, driver->tree.MakeScope($3, $6), $8); 
+    }
 ;
 
 else: ELSE LEFT_BRACE stmts RIGHT_BRACE

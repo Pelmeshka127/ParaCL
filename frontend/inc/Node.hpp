@@ -24,6 +24,8 @@ class Variable final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
+        int Execute() const override { return 0; }
+
         ~Variable()
         {
             std::cout << "Deleting Variable" << std::endl;
@@ -45,6 +47,8 @@ class Digit final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
+        int Execute() const override { return 0; }
+
         ~Digit()
         {
             std::cout << "Deleting digit" << std::endl;
@@ -65,6 +69,8 @@ class BinOp final : public INode
             : INode(Type_t::Operation), operator_type_{type}, left_{left}, right_{right} {}
 
         void Dump(std::ofstream& graph_file) const override;
+
+        int Execute() const override { return 0; }
 
         ~BinOp()
         {
@@ -91,6 +97,8 @@ class LogOp final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
+        int Execute() const override { return 0; }
+
         ~LogOp()
         {
             std::cout << "Deleting logoperator" << std::endl;
@@ -116,6 +124,19 @@ class Scope final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
+        int Execute() const override 
+        {
+            std::cout << "Executing Scope" << std::endl;
+
+            if (left_)
+                left_->Execute();
+
+            if (right_)
+                right_->Execute();
+
+            return 0;
+        }
+
         ~Scope()
         {
             std::cout << "Deleting Scope" << std::endl;
@@ -138,6 +159,8 @@ class Statement final : public INode
             INode(Type_t::KeyWord), type_{type}, left_{left}, right_{right} {}
 
         void Dump(std::ofstream& graph_file) const override;
+
+        int Execute() const override { return 0 ; }
 
         ~Statement()
         {

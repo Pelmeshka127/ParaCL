@@ -1,6 +1,6 @@
 #include "driver.hpp"
-#include "Node.hpp"
 #include "AST.hpp"
+#include "executor.hpp"
 
 int yyFlexLexer::yywrap() { return 1; }
 
@@ -14,8 +14,12 @@ int main()
 
     driver.Parse();
 
-    if (driver.tree.root_)
-        driver.tree.Dump();
+    Executor executor;
+
+    executor.Execute(driver.tree);
+
+    // if (driver.tree.root_)
+    //     driver.tree.Dump();
 
     return 0;
 }
