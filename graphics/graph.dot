@@ -2,18 +2,22 @@ digraph Tree
 {
    rankdir = HR;
    tree[shape = Mrecord, style = filled, color = "white", style = filled, fontcolor = "white", fillcolor = "blueviolet", label = "AST Tree"];
-   "0x155e06c90"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "coral1"   label = " {SCOPE}"];
-  "0x155e06c90" -> "0x155e06be0" [color = "black"];
-  "0x155e06c90" -> "0x155e06c70" [color = "black"];
-   "0x155e06be0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "red"   label = " {=}"];
-  "0x155e06be0" -> "0x155e06ba0" [color = "black"];
-  "0x155e06be0" -> "0x155e06bd0" [color = "black"];
-   "0x155e06ba0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "green",   label = " {x}"];
-   "0x155e06bd0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "yellow",   label = " {0}"];
-   "0x155e06c70"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "coral1"   label = " {SCOPE}"];
-  "0x155e06c70" -> "0x155e06c40" [color = "black"];
-   "0x155e06c40"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "khaki1"   label = " {PRINT}"];
-  "0x155e06c40" -> "0x155e06c10" [color = "black"];
-   "0x155e06c10"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "green",   label = " {x}"];
-   tree -> "0x155e06c90" [color = "blueviolet"];
+   "0x135606ce0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "coral1"   label = " {SCOPE}"];
+  "0x135606ce0" -> "0x135606be0" [color = "black"];
+  "0x135606ce0" -> "0x135606c90" [color = "black"];
+   "0x135606be0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "red"   label = " {=}"];
+  "0x135606be0" -> "0x135606ba0" [color = "black"];
+  "0x135606be0" -> "0x135606bd0" [color = "black"];
+   "0x135606ba0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "green",   label = " {x}"];
+   "0x135606bd0"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "yellow",   label = " {5}"];
+   "0x135606c90"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "coral1"   label = " {SCOPE}"];
+  "0x135606c90" -> "0x135606c60" [color = "black"];
+   "0x135606c60"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "khaki1"   label = " {PRINT}"];
+  "0x135606c60" -> "0x135606c30" [color = "black"];
+   "0x135606c30"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "red"   label = " {-}"];
+  "0x135606c30" -> "0x135606c10" [color = "black"];
+  "0x135606c30" -> "0x135606c20" [color = "black"];
+   "0x135606c10"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "yellow",   label = " {7}"];
+   "0x135606c20"[shape = Mrecord, color = "black", style = filled, fontcolor = "black", fillcolor = "yellow",   label = " {3}"];
+   tree -> "0x135606ce0" [color = "blueviolet"];
 }

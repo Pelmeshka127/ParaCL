@@ -3,6 +3,7 @@
 
 #include <string>
 #include <fstream>
+#include <unordered_map>
 
 #include "INode.hpp"
 
@@ -22,9 +23,13 @@ class Variable final : public INode
         Variable(const std::string name = "") 
             : INode(Type_t::Variable), name_{name} {}
 
-        void Dump(std::ofstream& graph_file) const override;
+        void        Dump(std::ofstream& graph_file) const override;
 
-        int Execute() const override { return 0; }
+        int         Execute() const override { return value_; }
+
+        std::string GetName() const { return name_; }
+
+        void        SetValue(const int val) { value_ = val; }
 
         ~Variable()
         {
@@ -32,6 +37,8 @@ class Variable final : public INode
         }
 
     private:
+
+        int value_ = 0;
 
         std::string name_ = "";
 };
@@ -47,7 +54,7 @@ class Digit final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
-        int Execute() const override { return 0; }
+        int Execute() const override { return value_; }
 
         ~Digit()
         {
@@ -70,7 +77,7 @@ class BinOp final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
-        int Execute() const override { return 0; }
+        int Execute() const override;
 
         ~BinOp()
         {
@@ -147,6 +154,8 @@ class Scope final : public INode
         INode* left_    = nullptr;
 
         Scope* right_   = nullptr;
+
+        std::unordered_map<std::string, Variable*> symtab_{};
 };
 
 //======================================================================================//
@@ -160,7 +169,21 @@ class Statement final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
-        int Execute() const override { return 0 ; }
+        int Execute() const override 
+        { 
+            switch(type_)
+            {
+                case KeyWords::Print:
+                {
+                    std::cout << left_->Execute() << std::endl;
+                }
+
+                default:
+                    return 0;
+            } 
+
+            return 0;
+        }
 
         ~Statement()
         {

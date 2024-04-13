@@ -28,7 +28,7 @@ enum class Operators {
     Minus,
     Mult,
     Divide,
-    Asg,
+    Asg
 };
 
 enum class LogicalOperator {

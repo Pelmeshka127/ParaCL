@@ -54,7 +54,8 @@ namespace yy
 
 %token <int>          DIGIT
 %token <std::string>  VAR
-%nterm <paracl::INode*> logoperator plusminus multdiv lval var 
+%nterm <paracl::INode*> logoperator plusminus multdiv lval 
+%nterm <paracl::Variable*> var 
 %nterm <paracl::INode*> input print
 %nterm <paracl::INode*> if else while
 %nterm <paracl::INode*> stmt
@@ -71,7 +72,7 @@ stmts: stmt stmts { $$ = driver->tree.MakeScope($1, $2); }
     | %empty {}
 ;
 
-stmt: var ASG logoperator SEMICOLON { $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3); }
+stmt: var ASG logoperator SEMICOLON { $$ = driver->tree.MakeBinOp(paracl::Operators::Asg, $1, $3); } 
     | print SEMICOLON { $$ = $1; }
     | input SEMICOLON { $$ = $1; }
     | if { $$ = $1; }

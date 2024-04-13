@@ -114,6 +114,53 @@ std::string GetKeyWordColor(const KeyWords type)
 
 //======================================================================================//
 
+int BinOp::Execute() const
+{
+    switch(operator_type_)
+    {
+        case Operators::Asg:
+        {
+            auto left = static_cast<Variable*>(left_);
+
+            int res = right_->Execute();
+
+            left->SetValue(right_->Execute());
+
+            return left->Execute();
+        }
+
+        case Operators::Plus:
+            return left_->Execute() + right_->Execute();
+
+        case Operators::Minus:
+            return left_->Execute() - right_->Execute();
+
+        case Operators::Mult:
+            return left_->Execute() * right_->Execute();
+
+        case Operators::Divide:
+        {
+            int right_res = right_->Execute();
+
+            if (right_res == 0)
+            {
+                std::cerr << "division by zero" << std::endl;
+
+                return 0;
+            }
+            
+            return left_->Execute() / right_res;
+        }
+
+        default:
+            std::cout << "to be continued" << std::endl;
+    }
+
+    return 0;
+}
+
+//======================================================================================//
+
 void Digit::Dump(std::ofstream& graph_file) const
 {
     #ifdef DUMP

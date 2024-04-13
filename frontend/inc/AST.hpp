@@ -33,6 +33,8 @@ class AST final
 
         Variable*   MakeVar(std::string name);
 
+        // Assignment* MakeAsg(Variable* left = nullptr, INode* right = nullptr);
+
         BinOp*      MakeBinOp(Operators op_type, INode* left = nullptr, INode* right = nullptr);
 
         LogOp*      MakeLogOp(LogicalOperator log_type, INode* left = nullptr, INode* right = nullptr);

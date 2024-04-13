@@ -32,7 +32,7 @@ class Executor
 
     private:
 
-        std::unordered_map<std::string, int> symtab;
+        std::unordered_map<std::string, int> symtab{};
 
 };
 
