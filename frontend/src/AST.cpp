@@ -68,13 +68,24 @@ Scope* AST::MakeScope(INode* left, Scope* right)
 
 //======================================================================================//
 
-Statement* AST::MakeStatement(KeyWords type, INode* left, INode* right)
+InOut* AST::MakeInOut(InOutType type, INode* left)
 {
-    auto node = std::make_unique<Statement>(type, left, right);
+    auto node = std::make_unique<InOut>(type, left);
 
     smart_nodes.push_back(std::move(node));
 
-    return static_cast<Statement*>(smart_nodes.back().get());
+    return static_cast<InOut*>(smart_nodes.back().get());
+}
+
+//======================================================================================//
+
+Loop* AST::MakeLoop(LoopType type, INode* left, INode* right)
+{
+    auto node = std::make_unique<Loop>(type, left, right);
+
+    smart_nodes.push_back(std::move(node));
+
+    return static_cast<Loop*>(smart_nodes.back().get());
 }
 
 //======================================================================================//

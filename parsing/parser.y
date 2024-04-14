@@ -105,26 +105,26 @@ lval: DIGIT { $$ = driver->tree.MakeDigit($1); }
 var: VAR { $$ = driver->tree.MakeVar($1); std::cout << "Var name is: " << $1 << std::endl; }
 ;
 
-print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = driver->tree.MakeStatement(paracl::KeyWords::Print, $3); }
+print: PRINT LEFT_BRACKET logoperator RIGHT_BRACKET { $$ = driver->tree.MakeInOut(paracl::InOutType::Print, $3); }
 ;
 
-input: var ASG INPUT { $$ = driver->tree.MakeStatement(paracl::KeyWords::Input, $1); }
+input: var ASG INPUT { $$ = driver->tree.MakeInOut(paracl::InOutType::Input, $1); }
 ;
 
 if: IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE { 
-    $$ = driver->tree.MakeStatement(paracl::KeyWords::If, driver->tree.MakeScope($3, $6)); 
+    $$ = driver->tree.MakeLoop(paracl::LoopType::If, driver->tree.MakeScope($3, $6)); 
     }
     | IF LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE else { 
-        $$ = driver->tree.MakeStatement(paracl::KeyWords::If, driver->tree.MakeScope($3, $6), $8); 
+        $$ = driver->tree.MakeLoop(paracl::LoopType::If, driver->tree.MakeScope($3, $6), $8); 
     }
 ;
 
 else: ELSE LEFT_BRACE stmts RIGHT_BRACE
-    { $$ = driver->tree.MakeStatement(paracl::KeyWords::Else, $3); }
+    { $$ = driver->tree.MakeLoop(paracl::LoopType::Else, $3); }
 ;
 
 while: WHILE LEFT_BRACKET logoperator RIGHT_BRACKET LEFT_BRACE stmts RIGHT_BRACE
-    { $$ = driver->tree.MakeStatement(paracl::KeyWords::While, $3, $6); }
+    { $$ = driver->tree.MakeLoop(paracl::LoopType::While, $3, $6); }
 ;
 
 %%

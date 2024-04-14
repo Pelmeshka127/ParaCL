@@ -62,24 +62,18 @@ template <> std::string GetWord(const LogicalOperator type)
 
 //======================================================================================//
 
-template <> std::string GetWord(const KeyWords type)
+template <> std::string GetWord(const LoopType type)
 {
     switch(type)
     {
-        case KeyWords::If:
+        case LoopType::If:
             return "IF";
 
-        case KeyWords::Else:
+        case LoopType::Else:
             return "ELSE";
 
-        case KeyWords::While:
+        case LoopType::While:
             return "WHILE";
-
-        case KeyWords::Input:
-            return "INPUT";
-
-        case KeyWords::Print:
-            return "PRINT";
 
         default:
             return "";
@@ -88,24 +82,15 @@ template <> std::string GetWord(const KeyWords type)
 
 //======================================================================================//
 
-std::string GetKeyWordColor(const KeyWords type)
+template <> std::string GetWord(const InOutType type)
 {
     switch(type)
     {
-        case KeyWords::If:
-            return "palevioletred1";
+        case InOutType::Input:
+            return "INPUT";
 
-        case KeyWords::Else:
-            return "palevioletred1";
-
-        case KeyWords::While:
-            return "palevioletred1";
-
-        case KeyWords::Input:
-            return "khaki1";
-
-        case KeyWords::Print:
-            return "khaki1";
+        case InOutType::Print:
+            return "PRINT";
 
         default:
             return "";
@@ -157,6 +142,39 @@ int BinOp::Execute() const
     }
 
     return 0;
+}
+
+//======================================================================================//
+
+int LogOp::Execute() const
+{
+    switch(operator_type_)
+    {
+        case LogicalOperator::Above:
+            return left_->Execute() > right_->Execute();
+
+        case LogicalOperator::Below:
+            return left_->Execute() < right_->Execute();
+
+        case LogicalOperator::Eq:
+            return left_->Execute() == right_->Execute();
+
+        case LogicalOperator::EqAbove:
+            return left_->Execute() >= right_->Execute();
+
+        case LogicalOperator::EqBelow:
+            return left_->Execute() <= right_->Execute();
+
+        case LogicalOperator::NotEq:
+            return left_->Execute() != right_->Execute();
+
+        default:
+        {
+            std::cerr << "Undefined logical operator " << static_cast<int>(operator_type_) << std::endl;
+
+            return 0;
+        }
+    }
 }
 
 //======================================================================================//
@@ -282,13 +300,36 @@ void Scope::Dump(std::ofstream& graph_file) const
 
 //======================================================================================//
 
-void Statement::Dump(std::ofstream& graph_file) const
+void InOut::Dump(std::ofstream& graph_file) const
 {
     #ifdef DUMP
 
-        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"" << GetKeyWordColor(type_) << "\"";
+        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"lightblue3\"";
 
-        graph_file << "   label = \" {" << GetWord(type_) << "}\"];\n";
+        graph_file << "   label = \" {" << GetWord(word_type_) << "}\"];\n";
+
+        if (left_)
+            graph_file << "  \"" << this << "\" -> \"" << left_ << "\" [color = \"black\"];\n";
+
+        if (left_)
+            left_->Dump(graph_file);
+
+    #else
+
+        std::cout << "Just Scope" << std::endl;
+
+    #endif
+}
+
+//======================================================================================//
+
+void Loop::Dump(std::ofstream& graph_file) const
+{
+    #ifdef DUMP
+
+        graph_file << "   \"" << this << "\"[shape = Mrecord, color = \"black\", style = filled, fontcolor = \"black\", fillcolor = \"palevioletred1\"";
+
+        graph_file << "   label = \" {" << GetWord(word_type_) << "}\"];\n";
 
         if (left_)
             graph_file << "  \"" << this << "\" -> \"" << left_ << "\" [color = \"black\"];\n";

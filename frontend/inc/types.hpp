@@ -10,9 +10,10 @@ enum class Type_t {
     Variable,
     Operation,
     LogOperation,
-    KeyWord,
-    Bracket,
+    InOutOperation,
+    LoopOperation,
     Scope,
+    Bracket,
 };
 
 enum class Brackets {
@@ -41,14 +42,18 @@ enum class LogicalOperator {
     NotEq,
 };
 
-enum class KeyWords {
+enum class InOutType {
     NoType,
     Input,
     Print,
+};  
+
+enum class LoopType {
+    NoType,
     If,
     Else,
     While,
-};  
+};
 
 } // end of paracl namespace
 

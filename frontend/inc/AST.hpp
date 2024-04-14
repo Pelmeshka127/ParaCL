@@ -33,15 +33,15 @@ class AST final
 
         Variable*   MakeVar(std::string name);
 
-        // Assignment* MakeAsg(Variable* left = nullptr, INode* right = nullptr);
-
         BinOp*      MakeBinOp(Operators op_type, INode* left = nullptr, INode* right = nullptr);
 
         LogOp*      MakeLogOp(LogicalOperator log_type, INode* left = nullptr, INode* right = nullptr);
 
         Scope*      MakeScope(INode* left = nullptr, Scope* right = nullptr);
 
-        Statement*  MakeStatement(KeyWords type, INode* left = nullptr, INode* right = nullptr);
+        InOut*      MakeInOut(InOutType type, INode* left = nullptr);
+
+        Loop*       MakeLoop(LoopType type, INode* left = nullptr, INode* right = nullptr);
 
 
         ~AST() = default;

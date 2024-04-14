@@ -12,8 +12,6 @@ namespace paracl
 
 template <typename T> std::string GetWord(const T type);
 
-std::string GetKeyWordColor(const KeyWords type);
-
 //======================================================================================//
 
 class Variable final : public INode
@@ -104,7 +102,7 @@ class LogOp final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
-        int Execute() const override { return 0; }
+        int Execute() const override;
 
         ~LogOp()
         {
@@ -160,34 +158,45 @@ class Scope final : public INode
 
 //======================================================================================//
 
-class Statement final : public INode
+class InOut final : public INode
 {
     public:
 
-        Statement(const KeyWords type = KeyWords::NoType, INode* const left = nullptr, INode* const right = nullptr) :
-            INode(Type_t::KeyWord), type_{type}, left_{left}, right_{right} {}
+        InOut(const InOutType type = InOutType::NoType, INode* const left = nullptr) :
+            INode(Type_t::InOutOperation), word_type_{type}, left_{left} {}
 
         void Dump(std::ofstream& graph_file) const override;
 
-        int Execute() const override 
-        { 
-            switch(type_)
-            {
-                case KeyWords::Print:
-                {
-                    std::cout << left_->Execute() << std::endl;
-                }
+        int Execute() const override { return 0; }
 
-                default:
-                    return 0;
-            } 
-
-            return 0;
+        ~InOut()
+        {
+            std::cout << "deleting InOut" << std::endl;
         }
 
-        ~Statement()
+    private:
+
+        INode* left_ = nullptr;
+
+        InOutType word_type_ = InOutType::NoType;
+};
+
+//======================================================================================//
+
+class Loop final : public INode
+{
+    public:
+
+        Loop(const LoopType type = LoopType::NoType, INode* const left = nullptr, INode* const right = nullptr) :
+            INode(Type_t::LoopOperation), word_type_{type}, left_{left}, right_{right} {}
+
+        void Dump(std::ofstream& graph_file) const override;
+
+        int Execute() const override { return 0; }
+
+        ~Loop()
         {
-            std::cout << "Deleting Statement" << std::endl;
+            std::cout << "Deleting Loop" << std::endl;
         }
 
 
@@ -197,7 +206,7 @@ class Statement final : public INode
 
         INode* right_ = nullptr;
 
-        KeyWords type_ = KeyWords::NoType;
+        LoopType word_type_ = LoopType::NoType;
 };
 
 //======================================================================================//
