@@ -127,20 +127,13 @@ class Scope final : public INode
         Scope(INode* const left = nullptr, Scope* const right = nullptr) :
             INode(Type_t::Scope), left_{left}, right_{right} {}
 
+        INode* GetLeft() const { return left_; }
+
+        INode* GetRight() const { return right_; }
+
         void Dump(std::ofstream& graph_file) const override;
 
-        int Execute() const override 
-        {
-            std::cout << "Executing Scope" << std::endl;
-
-            if (left_)
-                left_->Execute();
-
-            if (right_)
-                right_->Execute();
-
-            return 0;
-        }
+        int Execute() const override;
 
         ~Scope()
         {
@@ -167,7 +160,7 @@ class InOut final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
-        int Execute() const override { return 0; }
+        int Execute() const override;
 
         ~InOut()
         {
@@ -192,7 +185,7 @@ class Loop final : public INode
 
         void Dump(std::ofstream& graph_file) const override;
 
-        int Execute() const override { return 0; }
+        int Execute() const override;
 
         ~Loop()
         {

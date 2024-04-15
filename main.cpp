@@ -18,8 +18,8 @@ int main()
 
     executor.Execute(driver.tree);
 
-    // if (driver.tree.root_)
-    //     driver.tree.Dump();
+    if (driver.tree.root_)
+        driver.tree.Dump();
 
     return 0;
 }
